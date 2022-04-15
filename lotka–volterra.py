@@ -7,12 +7,12 @@ BETA = 4.0/3.0
 DELTA = 1.0
 GAMMA = 1.0
 
-ALPHA = 1.1
-BETA = 0.4
-# DELTA = 0.4
-DELTA = 0.1
-# GAMMA = 0.1
-GAMMA = 0.4
+# ALPHA = 1.1
+# BETA = 0.4
+# # DELTA = 0.4
+# DELTA = 0.1
+# # GAMMA = 0.1
+# GAMMA = 0.4
 
 
 def lotka_volterra(state,t):
