@@ -16,6 +16,7 @@ class GeneralizedLotkaVolterraSim():
     r = None
     sate = None
     h = None
+
     # species_data is a dict of {name:{'r':r, 'relations':{target_species:val,}, 'reverse_relations':{target_species:val,}}}
     def __init__(self, species_data=None, h=0.00001):
         self.h = h
@@ -27,11 +28,11 @@ class GeneralizedLotkaVolterraSim():
             self.state_history = pd.DataFrame(columns=self.species_names)
 
             for name in species_data.keys():
-                self.rs[name]=species_data[name]['r']
-                for target in species_data[name['relations']].keys():
-                    self.species_relations.loc[name,target] = species_data[name['relations']][target]
-                for target in species_data[name['reverse_relations']].keys():
-                    self.species_relations.loc[target,name] = species_data[name['reverse_relations']][target]
+                self.species_rs[name]=species_data[name]['r']
+                for target in species_data[name]['relations'].keys():
+                    self.species_relations.loc[name,target] = species_data[name]['relations'][target]
+                for target in species_data[name]['reverse_relations'].keys():
+                    self.species_relations.loc[target,name] = species_data[name]['reverse_relations'][target]
 
     #form A and r needed for integration
     def form_matrix(self,):
@@ -142,7 +143,7 @@ def tests():
     print(sim)
     sim.plot()
 
-    
+
     sim.add_species(name='Grass', r=0.5, relations={'Rabbit': -1.0}, reverse_relations={'Rabbit':2.0})
     sim.update_species(name='Rabbit', r=-1.0)
     print(sim)
@@ -152,5 +153,25 @@ def tests():
     print(sim)
     sim.plot()
 
+def example():
+    # species_data = {'spec1':{'r':-0.4, 'relations':{'spec2':0.3,'spec3':0.1}, 'reverse_relations':{}},
+    #                 'spec2':{'r':0.2, 'relations':{'spec1':-0.3,'spec3':0.1}, 'reverse_relations':{}},
+    #                 'spec3':{'r':0.2, 'relations':{'spec1':-0.1,'spec2':-0.1}, 'reverse_relations':{}},}
+    species_data = {'spec1':{'r':-0.15, 'relations':{'spec2':0,'spec3':0.15}, 'reverse_relations':{}},
+                    'spec2':{'r':-0.1, 'relations':{'spec1':0,'spec3':0.1}, 'reverse_relations':{}},
+                    'spec3':{'r':0.2, 'relations':{'spec1':-0.1,'spec2':-0.1}, 'reverse_relations':{}},}
+    print(species_data)
+    sim = GeneralizedLotkaVolterraSim(h=0.00005, species_data=species_data)
+    sim.set_state({'spec1':1.0, 'spec2':1.0, 'spec3':2.0})
+    sim.form_matrix()
+    print(sim)
+    # sim.add_species(name='Rabbit', r=1.0, relations={}, reverse_relations={})
+    sim.intergrate(250.0)
+    print(sim)
+    sim.plot()
+
+
+
 if __name__ == '__main__':
-    tests()
+    # tests()
+    example()
