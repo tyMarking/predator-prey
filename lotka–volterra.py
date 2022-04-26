@@ -7,6 +7,8 @@ BETA = 4.0/3.0
 DELTA = 1.0
 GAMMA = 1.0
 
+SpeciesX = 'Rabbit'
+SpeciesY = 'Fox'
 # ALPHA = 1.1
 # BETA = 0.4
 # # DELTA = 0.4
@@ -26,12 +28,21 @@ def main():
     states = odeint(lotka_volterra, state0, t)
     print(states)
     plt.plot(states[:,0],states[:,1])
+    plt.xlabel(SpeciesX)
+    plt.ylabel(SpeciesY)
+    plt.title(f'{SpeciesY} vs. {SpeciesX} (Time Suppressed)')
+    plt.grid(True, linewidth=0.5)
     plt.show()
-
+    
     plt.plot(states[:,0])
     plt.plot(states[:,1])
+    plt.legend([SpeciesX, SpeciesY])
+    plt.xlabel('Time')
+    plt.ylabel('Population Size')
+    plt.title(f'{SpeciesY} vs. {SpeciesX}')
+    plt.grid(True, linewidth=0.5)
     plt.show()
-
+ 
 
 if __name__ == '__main__':
     main()
