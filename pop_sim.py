@@ -109,7 +109,15 @@ class GeneralizedLotkaVolterraSim():
         for name in self.species_names:
             plt.plot(self.state_history.index, self.state_history[name], label=name)
         # plt.plot(states[:,1])
-        plt.legend(loc='upper left')
+        plt.legend(loc='upper right')
+        
+        title = self.species_names[0]
+        for species in self.species_names[1:]:
+            title += f' vs. {species} '
+        plt.title(title)
+        plt.xlabel('time (t)')
+        plt.ylabel('Population Size')
+        plt.grid(True, linewidth=0.5)
         plt.show()
         # plt.plot(states[:,0],states[:,1])
         # plt.show()
