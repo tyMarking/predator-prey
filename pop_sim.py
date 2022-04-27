@@ -106,16 +106,18 @@ class GeneralizedLotkaVolterraSim():
 
     #Plot the entire state history, need to expand on this
     def plot(self,):
+        plt.figure(figsize=(10, 6), dpi=160)
+
         for name in self.species_names:
             plt.plot(self.state_history.index, self.state_history[name], label=name)
         # plt.plot(states[:,1])
         plt.legend(loc='upper right')
-        
+
         title = self.species_names[0]
         for species in self.species_names[1:]:
             title += f' vs. {species} '
         plt.title(title)
-        plt.xlabel('time (t)')
+        plt.xlabel('Time (t)')
         plt.ylabel('Population Size')
         plt.grid(True, linewidth=0.5)
         plt.show()
@@ -178,8 +180,28 @@ def example():
     print(sim)
     sim.plot()
 
+def dinos():
+    species_data = {'Macrauchenia':{'r':0.1, 'relations':{'Terror Bird':-0.1}, 'reverse_relations':{}},
+                    'Terror Bird':{'r':-0.1, 'relations':{'Macrauchenia':0.09}, 'reverse_relations':{}},}
+
+    sim = GeneralizedLotkaVolterraSim(h=0.00005, species_data=species_data)
+    sim.set_state({'Macrauchenia':1.0, 'Terror Bird':0.9})
+    sim.form_matrix()
+    sim.intergrate(200.0)
+    # sim.plot()
+
+    sim.add_species(name='Smilodon', r=-0.1, relations={'Macrauchenia':0.19,'Terror Bird':0}, reverse_relations={'Macrauchenia':-0.2,'Terror Bird':0.115})
+    # sim.update_species(name='Macrauchenia', relations={'Terror Bird':-0.08})
+    # sim.update_species(name='Terror Bird', relations={'Macrauchenia':0.11})
+    print(sim)
+    sim.set_state({'Smilodon':0.001})
+    print(sim)
+    sim.form_matrix()
+    sim.intergrate(500.0)
+    sim.plot()
 
 
 if __name__ == '__main__':
     # tests()
-    example()
+    # example()
+    dinos()
